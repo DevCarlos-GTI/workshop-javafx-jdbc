@@ -10,50 +10,30 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	
-	private static Scene mainScene;
-
+private static Scene mainScene;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
-			//Parent parent = loader.load();
-			ScrollPane scrollPane = loader.load();// p resolver problema dos menus na tela
+			ScrollPane scrollPane = loader.load();
 			
-			//altura e largura
 			scrollPane.setFitToHeight(true);
 			scrollPane.setFitToWidth(true);
-
-			//Scene mainScene = new Scene(parent);
-			//Scene mainScene = new Scene(scrollPane);
+			
 			mainScene = new Scene(scrollPane);
 			primaryStage.setScene(mainScene);
 			primaryStage.setTitle("Sample JavaFX application");
 			primaryStage.show();
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	//metodo p pegar mainScene
+
 	public static Scene getMainScene() {
 		return mainScene;
 	}
 	
-	/*@Override
-	public void start(Stage primaryStage) {
-		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}*/
-	
-
 	public static void main(String[] args) {
 		launch(args);
 	}

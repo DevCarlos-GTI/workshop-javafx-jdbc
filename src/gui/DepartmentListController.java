@@ -19,10 +19,10 @@ import model.services.DepartmentService;
 
 public class DepartmentListController implements Initializable{
 	
-	private DepartmentService service;
+private DepartmentService service;
 	
 	@FXML
-	private TableView<Department> tableViewDepatment;
+	private TableView<Department> tableViewDepartment;
 	
 	@FXML
 	private TableColumn<Department, Integer> tableColumnId;
@@ -35,37 +35,36 @@ public class DepartmentListController implements Initializable{
 	
 	private ObservableList<Department> obsList;
 	
+	@FXML
 	public void onBtNewAction() {
 		System.out.println("onBtNewAction");
 	}
 	
-	public void setDepatmentService(DepartmentService service) {
+	public void setDepartmentService(DepartmentService service) {
 		this.service = service;
 	}
-
+	
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		initializeNodes();
-		
 	}
 
 	private void initializeNodes() {
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
 		
-		//vamos deixar TableView ate o final da tela
+		//deixar a TableView na tela toda
 		Stage stage = (Stage) Main.getMainScene().getWindow();
-		tableViewDepatment.prefHeightProperty().bind(stage.heightProperty());
-		
+		tableViewDepartment.prefHeightProperty().bind(stage.heightProperty());
 	}
 	
 	public void updateTableView() {
-		if(service == null) {
+		if (service == null) {
 			throw new IllegalStateException("Service was null");
 		}
 		List<Department> list = service.findAll();
 		obsList = FXCollections.observableArrayList(list);
-		tableViewDepatment.setItems(obsList);
+		tableViewDepartment.setItems(obsList);
 	}
 
 }
