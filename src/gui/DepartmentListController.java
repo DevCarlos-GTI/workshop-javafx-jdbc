@@ -29,7 +29,7 @@ import model.services.DepartmentService;
 
 public class DepartmentListController implements Initializable{
 	
-private DepartmentService service;
+	private DepartmentService service;
 	
 	@FXML
 	private TableView<Department> tableViewDepartment;
@@ -48,7 +48,8 @@ private DepartmentService service;
 	@FXML
 	public void onBtNewAction(ActionEvent event) {
 		Stage parentStage = Utils.currentStage(event);
-		createDialogForm("/gui/DepartmentForm.fxml", parentStage);
+		Department obj = new Department();
+		createDialogForm(obj, "/gui/DepartmentForm.fxml", parentStage);
 	}
 
 	public void setDepartmentService(DepartmentService service) {
@@ -79,11 +80,16 @@ private DepartmentService service;
 	}
 	
 	//Função p abrir a janela de formualário
-	private void createDialogForm(String absoluteName, Stage parentStage) {
+	private void createDialogForm(Department obj, String absoluteName, Stage parentStage) {
 	
-		try {//abrir a janela
+		try {//carrega a tela
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
+			
+			//pegar o controlador
+			DepartmentFormController controller = loader.getController();
+			controller.setDepartment(obj);//obj e minha entidade Departamento
+			controller.updateFormData();//carrego os dados obj(entidade) para o Formulário
 		
 			//Vamos instanciar o stage
 			Stage dialogStage = new Stage();
