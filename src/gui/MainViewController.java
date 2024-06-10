@@ -20,6 +20,7 @@ import model.services.DepartmentService;
 
 public class MainViewController implements Initializable{
 	
+	
 	@FXML
 	private MenuItem menuItemSeller;
 	

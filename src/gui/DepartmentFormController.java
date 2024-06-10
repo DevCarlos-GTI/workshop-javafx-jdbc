@@ -1,9 +1,12 @@
 package gui;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import db.DbException;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -19,6 +22,9 @@ import model.services.DepartmentService;
 
 
 public class DepartmentFormController implements Initializable {
+	
+	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
+	
 	
 	//criamos a dependencia
 	private Department entity;
@@ -50,6 +56,10 @@ public class DepartmentFormController implements Initializable {
 		this.service = service;
 	}
 	
+	//escrever na minha lista
+	public void subscribeDataChangeListener(DataChangeListener listener) {
+		dataChangeListeners.add(listener);
+	}
 	
 	//criar os eventos da botões
 	public void onBtSaveAction(ActionEvent event) {
@@ -63,6 +73,9 @@ public class DepartmentFormController implements Initializable {
 			entity = getFormData();
 			service.saveOrUpdate(entity);//Salva
 			
+			//notificar
+			notifyDataChangeListeners();
+			
 			//salvo fecha a janela
 			Utils.currentStage(event).close();
 		}
@@ -70,6 +83,13 @@ public class DepartmentFormController implements Initializable {
 			Alerts.showAlert("Error saving object", null, e.getMessage(), AlertType.ERROR);
 		}
 	}
+	private void notifyDataChangeListeners() {
+		// TODO Auto-generated method stub
+		for(DataChangeListener listener: dataChangeListeners) {
+			listener.onDataChanged();
+		}
+	}
+
 	//metoda para pegar o user digitou e instanciar um departamento p salvar
 	private Department getFormData() {
 		
