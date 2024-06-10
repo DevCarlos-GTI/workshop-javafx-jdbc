@@ -29,6 +29,7 @@ import model.services.DepartmentService;
 
 public class DepartmentListController implements Initializable{
 	
+	//injetando
 	private DepartmentService service;
 	
 	@FXML
@@ -89,6 +90,7 @@ public class DepartmentListController implements Initializable{
 			//pegar o controlador
 			DepartmentFormController controller = loader.getController();
 			controller.setDepartment(obj);//obj e minha entidade Departamento
+			controller.setDepartmentService(new DepartmentService()); //injetar ele aqui também
 			controller.updateFormData();//carrego os dados obj(entidade) para o Formulário
 		
 			//Vamos instanciar o stage
