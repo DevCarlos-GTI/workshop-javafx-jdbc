@@ -3,7 +3,9 @@ package gui;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import db.DbException;
 import gui.listeners.DataChangeListener;
@@ -18,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import model.entities.Department;
+import model.exceptions.ValidationException;
 import model.services.DepartmentService;
 
 
@@ -79,6 +82,9 @@ public class DepartmentFormController implements Initializable {
 			//salvo fecha a janela
 			Utils.currentStage(event).close();
 		}
+		catch (ValidationException e) {
+			setErrorMessages(e.getErrors());
+		}
 		catch (DbException e) {
 			Alerts.showAlert("Error saving object", null, e.getMessage(), AlertType.ERROR);
 		}
@@ -93,9 +99,20 @@ public class DepartmentFormController implements Initializable {
 	//metoda para pegar o user digitou e instanciar um departamento p salvar
 	private Department getFormData() {
 		
+		//validar excecoes
+		ValidationException exception = new ValidationException("Validation error");
+		
 		Department obj = new Department();
 		obj.setId(Utils.tryParseToInt(txtId.getText())); //convertento p int o vai ser digitado p user
+		
+		if(txtName.getText() == null || txtName.getText().trim().equals("")) { //trim verifica se ta fazio
+			exception.addError("name", "Field can´t be empty"); // o nome ñ pode ser fazio 
+		}
 		obj.setName(txtName.getText()); // precisa convert pois ja é uma String
+		
+		if(exception.getErrors().size() >0) {
+			throw exception;
+		}
 		
 		return obj;
 	}
@@ -126,6 +143,15 @@ public class DepartmentFormController implements Initializable {
 		//meu TextFild recebe o pega o id da Entidade Department
 		txtId.setText(String.valueOf(entity.getId()));//aqui converto de Int p String
 		txtName.setText(entity.getName()); //ñ precisa converter p String pois ja é String
+	}
+	
+	//metodo p erros
+	private void setErrorMessages(Map<String, String> errors) {
+		Set<String> fields = errors.keySet();
+		
+		if (fields.contains("name")) {
+			labelError.setText(errors.get("name"));
+		}
 	}
 
 }
