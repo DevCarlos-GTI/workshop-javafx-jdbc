@@ -28,6 +28,10 @@ public class DepartmentService {
 			dao.update(obj); //atualizo 
 		}
 	}
+	//deletar
+	public void remove(Department obj) {
+		dao.deleteById(obj.getId());
+	}
 	
 	
 //	//Antes de implementar DB
