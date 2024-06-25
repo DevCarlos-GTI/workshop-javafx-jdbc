@@ -31,6 +31,13 @@ public class Utils {
 		}
 	}
 
+	public static Double tryParseToDouble(String str) {
+		try {
+			return Double.parseDouble(str); // convertendo
+		} catch (NumberFormatException e) {
+			return null;
+		}
+	}
 	// formatar a data
 	public static <T> void formatTableColumnDate(TableColumn<T, Date> tableColumn, String format) {
 		tableColumn.setCellFactory(column -> {
