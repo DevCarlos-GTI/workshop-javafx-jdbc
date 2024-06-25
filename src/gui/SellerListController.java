@@ -31,6 +31,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Seller;
+import model.services.DepartmentService;
 import model.services.SellerService;
 
 public class SellerListController implements Initializable, DataChangeListener {
@@ -124,7 +125,8 @@ public class SellerListController implements Initializable, DataChangeListener {
 			// pegar o controlador
 			SellerFormController controller = loader.getController();
 			controller.setSeller(obj);// obj e minha entidade Departamento
-			controller.setSellerService(new SellerService()); // injetar ele aqui também
+			controller.setServices(new SellerService(), new DepartmentService()); // injetar ele aqui também
+			controller.loadAssociatedObjects();//chama o met do comboBox do depart
 			controller.subscribeDataChangeListener(this);// se escrevendo p receber o evento de noticação
 			controller.updateFormData();// carrego os dados obj(entidade) para o Formulário
 
@@ -137,6 +139,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.showAndWait();
 		} catch (IOException e) {
+			e.printStackTrace();// aperece no console possíveis erros
 			Alerts.showAlert("IO Exception", "Error loading view", e.getMessage(), AlertType.ERROR);
 		}
 	}
